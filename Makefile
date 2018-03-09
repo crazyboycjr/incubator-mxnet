@@ -301,6 +301,11 @@ ifeq ($(USE_DIST_KVSTORE), 1)
 	LDFLAGS += $(PS_LDFLAGS_A)
 endif
 
+ifeq ($(USE_RDMA), 1)
+	CFLAGS += -DDMLC_ENABLE_RDMA
+	LDFLAGS += -lrdmacm -libverbs -pthread
+endif
+
 .PHONY: clean all extra-packages test lint docs clean_all rcpplint rcppexport roxygen\
 	cython2 cython3 cython cyclean
 
@@ -432,7 +437,7 @@ lib/libmxnet.so: $(ALLX_DEP)
 $(PS_PATH)/build/libps.a: PSLITE
 
 PSLITE:
-	$(MAKE) CXX=$(CXX) DEPS_PATH=$(DEPS_PATH) -C $(PS_PATH) ps
+	$(MAKE) CXX=$(CXX) DEPS_PATH=$(DEPS_PATH) USE_RDMA=$(USE_RDMA) -C $(PS_PATH) ps
 
 $(DMLC_CORE)/libdmlc.a: DMLCCORE
 
