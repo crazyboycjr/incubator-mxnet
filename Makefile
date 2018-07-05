@@ -351,6 +351,11 @@ ifeq ($(USE_DIST_KVSTORE), 1)
 	LDFLAGS += $(PS_LDFLAGS_A)
 endif
 
+ifeq ($(USE_RDMA), 1)
+	CFLAGS += -DDMLC_ENABLE_RDMA
+	LDFLAGS += -lrdmacm -libverbs -lpthread
+endif
+
 .PHONY: clean all extra-packages test lint docs clean_all rcpplint rcppexport roxygen\
 	cython2 cython3 cython cyclean
 
